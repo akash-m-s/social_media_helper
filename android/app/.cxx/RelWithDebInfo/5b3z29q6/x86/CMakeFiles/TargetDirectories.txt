@@ -1,0 +1,2 @@
+/Users/akashsindu/Documents/GitHub/social_media_helper/android/app/.cxx/RelWithDebInfo/5b3z29q6/x86/CMakeFiles/edit_cache.dir
+/Users/akashsindu/Documents/GitHub/social_media_helper/android/app/.cxx/RelWithDebInfo/5b3z29q6/x86/CMakeFiles/rebuild_cache.dir
