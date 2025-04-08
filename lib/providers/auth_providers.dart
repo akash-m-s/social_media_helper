@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import '../models/user_model.dart';
 import '../services/auth_service.dart';
+import '../shared/disposible_email_domain_validator.dart';
 
 class AuthProvider with ChangeNotifier {
+  final DisposableEmailValidator _emailValidator;
   final AuthService _authService = AuthService();
+  AuthProvider(this._emailValidator);
   UserModel? _user;
 
   UserModel? get user => _user;
@@ -12,10 +15,14 @@ class AuthProvider with ChangeNotifier {
   // Method to handle sign up
   Future<void> signUp(String email, String password) async {
     try {
-      _user = await _authService.signUp(email, password);
+      _user = await _authService.signUp(
+        email: email,
+        password: password,
+        validator: _emailValidator,
+      );
       notifyListeners();
     } catch (e) {
-      throw e.toString();
+      rethrow;
     }
   }
 

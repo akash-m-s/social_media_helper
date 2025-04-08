@@ -1,13 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/user_model.dart';
+import '../shared/disposible_email_domain_validator.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-  Future<UserModel?> signUp(String email, String password) async {
+  Future<UserModel?> signUp({
+    required String email,
+    required String password,
+    required DisposableEmailValidator validator,
+  }) async {
+    if (validator.isDisposable(email)) {
+      throw 'Invalid email domain.';
+    }
     try {
       final userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,

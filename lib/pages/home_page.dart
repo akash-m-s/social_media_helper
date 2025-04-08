@@ -20,6 +20,14 @@ class HomePage extends StatelessWidget {
             Text('Welcome, ${authProvider.user?.email}'),
             const SizedBox(height: 20),
             ElevatedButton(
+              onPressed: () {
+                context.push(
+                  '/chat',
+                );
+              },
+              child: const Text('Text helper'),
+            ),
+            ElevatedButton(
               onPressed: () async {
                 await authProvider.signOut();
                 context.go(

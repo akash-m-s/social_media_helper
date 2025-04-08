@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:social_media_helper/pages/reset_passwords.dart';
+import 'pages/chat_simulation_page.dart';
 import 'pages/login_page.dart';
 import 'pages/signup_page.dart';
 import 'pages/home_page.dart';
@@ -56,6 +57,12 @@ class AppRouter {
             return const VerifyEmailPage();
           },
         ),
+        // Chat simulation screen
+        GoRoute(
+            path: '/chat',
+            builder: (context, state) {
+              return const ChatSimulationPage();
+            }),
       ],
     );
   }
