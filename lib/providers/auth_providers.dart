@@ -39,13 +39,31 @@ class AuthProvider with ChangeNotifier {
   // Check authentication status
   Future<void> checkAuthStatus() async {
     final currentUser = _authService.currentUser;
+
     if (currentUser != null) {
+      final isEmailVerified = await _authService.isEmailVerified();
+      if (!isEmailVerified) {
+        _user = null;
+        return;
+      }
       _user = UserModel(
         id: currentUser.uid,
         email: currentUser.email ?? '',
       );
     }
     Future.microtask(() => notifyListeners());
+  }
+
+  Future<void> sendEmailVerification() async {
+    try {
+      await _authService.sendEmailVerification();
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  Future<bool> isEmailVerified() async {
+    return await _authService.isEmailVerified();
   }
 
   Future<void> resetPassword(String email) async {

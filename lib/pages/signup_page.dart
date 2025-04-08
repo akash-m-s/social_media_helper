@@ -59,7 +59,7 @@ class SignupPageState extends State<SignupPage> {
                   try {
                     await authProvider.signUp(
                         emailController.text, passwordController.text);
-                    context.go('/login');
+                    context.go('/verify-email');
                   } catch (e) {
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text(e.toString())));

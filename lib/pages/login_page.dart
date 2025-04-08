@@ -6,11 +6,18 @@ import 'package:provider/provider.dart';
 
 import '../providers/auth_providers.dart';
 
-class LoginPage extends StatelessWidget {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
-  LoginPage({super.key});
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController emailController = TextEditingController();
+
+  final TextEditingController passwordController = TextEditingController();
+  bool emailNotVerified = false;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +44,19 @@ class LoginPage extends StatelessWidget {
                 try {
                   await authProvider.signIn(
                       emailController.text, passwordController.text);
+                  final isVerified = await authProvider.isEmailVerified();
+                  if (!isVerified) {
+                    setState(() {
+                      emailNotVerified = true;
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Email not verified yet.')),
+                    );
+                    context.go(
+                      '/verify-email',
+                    );
+                    return;
+                  }
                   context.go(
                     '/home',
                   );

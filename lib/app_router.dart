@@ -5,6 +5,7 @@ import 'pages/login_page.dart';
 import 'pages/signup_page.dart';
 import 'pages/home_page.dart';
 import 'pages/splash_screen.dart';
+import 'pages/verify_email_page.dart';
 
 class AppRouter {
   static GoRouter getRouter(BuildContext context) {
@@ -23,7 +24,7 @@ class AppRouter {
         GoRoute(
           path: '/login',
           builder: (context, state) {
-            return LoginPage();
+            return const LoginPage();
           },
         ),
 
@@ -46,6 +47,13 @@ class AppRouter {
           path: '/home',
           builder: (context, state) {
             return const HomePage();
+          },
+        ),
+
+        GoRoute(
+          path: '/verify-email',
+          builder: (context, state) {
+            return const VerifyEmailPage();
           },
         ),
       ],

@@ -70,5 +70,24 @@ class AuthService {
     await _auth.signOut();
   }
 
+  Future<void> sendEmailVerification() async {
+    try {
+      final user = _auth.currentUser;
+      if (user != null && !user.emailVerified) {
+        await user.sendEmailVerification();
+      }
+    } on FirebaseAuthException catch (e) {
+      throw e.message ?? 'Something went wrong.';
+    } catch (e) {
+      throw e.toString(); // Handle errors and rethrow
+    }
+  }
+
+  Future<bool> isEmailVerified() async {
+    final user = _auth.currentUser;
+    await user?.reload(); // Reload to get latest user data
+    return user?.emailVerified ?? false;
+  }
+
   User? get currentUser => _auth.currentUser;
 }
