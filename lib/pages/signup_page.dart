@@ -22,6 +22,7 @@ class SignupPageState extends State<SignupPage> {
   bool _isPasswordValid = true;
   bool _agreedToTerms = false;
   bool _isLoading = false;
+  bool _showTermsError = false;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,10 @@ class SignupPageState extends State<SignupPage> {
             CheckboxListTile(
               value: _agreedToTerms,
               onChanged: (val) {
-                setState(() => _agreedToTerms = val ?? false);
+                setState(() {
+                  _agreedToTerms = val ?? false;
+                  _showTermsError = !val!;
+                });
               },
               title: Row(
                 children: [
@@ -75,7 +79,7 @@ class SignupPageState extends State<SignupPage> {
                 'Passwords do not match!',
                 style: TextStyle(color: Colors.red),
               ),
-            if (!_agreedToTerms)
+            if (_showTermsError)
               const Text(
                 'You must agree to the terms.',
                 style: TextStyle(color: Colors.red),
@@ -90,11 +94,17 @@ class SignupPageState extends State<SignupPage> {
                         setState(() => _isPasswordValid = false);
                         return;
                       }
-                      if (!_agreedToTerms) return;
+                      if (!_agreedToTerms) {
+                        setState(() {
+                          _showTermsError = true;
+                        });
+                        return;
+                      }
 
                       setState(() {
                         _isPasswordValid = true;
                         _isLoading = true;
+                        _showTermsError = false;
                       });
 
                       try {

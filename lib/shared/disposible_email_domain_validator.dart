@@ -4,8 +4,7 @@ class DisposableEmailValidator {
   Set<String> _domains = {};
 
   Future<void> loadDomains() async {
-    final raw =
-        await rootBundle.loadString('assets/email_block_domain_list.conf');
+    final raw = await rootBundle.loadString('assets/allowed_domains.conf');
     _domains = raw
         .split('\n')
         .map((line) => line.trim().toLowerCase())
@@ -13,7 +12,7 @@ class DisposableEmailValidator {
         .toSet();
   }
 
-  bool isDisposable(String email) {
+  bool isUsable(String email) {
     final domain = email.split('@').last.toLowerCase();
     return _domains.contains(domain);
   }

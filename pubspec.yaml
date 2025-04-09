@@ -29,4 +29,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/email_block_domain_list.conf
+    - assets/allowed_domains.conf
     

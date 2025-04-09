@@ -13,9 +13,20 @@ class AuthService {
     required String password,
     required DisposableEmailValidator validator,
   }) async {
-    if (validator.isDisposable(email)) {
+    if (email.isEmpty || password.isEmpty) {
+      throw 'Email and password cannot be empty.';
+    }
+    if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+        .hasMatch(email)) {
+      throw 'Invalid email format.';
+    }
+    if (!validator.isUsable(email)) {
       throw 'Invalid email domain.';
     }
+    if (password.length < 6) {
+      throw 'Password must be at least 6 characters.';
+    }
+
     try {
       final userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
