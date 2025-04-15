@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:social_media_helper/pages/caption_generator_screen.dart';
 import 'package:social_media_helper/pages/reset_passwords.dart';
 import 'package:social_media_helper/pages/terms_page.dart';
 import 'pages/chat_simulation_page.dart';
+import 'pages/hastag_suggeations_screen.dart';
 import 'pages/login_page.dart';
 import 'pages/signup_page.dart';
 import 'pages/home_page.dart';
@@ -48,7 +50,7 @@ class AppRouter {
         GoRoute(
           path: '/home',
           builder: (context, state) {
-            return const HomePage();
+            return const HomeScreen();
           },
         ),
 
@@ -70,6 +72,15 @@ class AppRouter {
           builder: (context, state) {
             return const TermsPage();
           },
+        ),
+
+        GoRoute(
+          path: '/caption-generator',
+          builder: (context, state) => const CaptionGeneratorScreen(),
+        ),
+        GoRoute(
+          path: '/hashtag-helper',
+          builder: (context, state) => const HashtagSuggestionScreen(),
         ),
       ],
     );

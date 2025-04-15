@@ -6,7 +6,9 @@ import 'app_router.dart';
 import 'models/chat_message.dart';
 import 'providers/auth_providers.dart';
 import 'firebase_options.dart';
+import 'providers/caption_provider.dart';
 import 'providers/chat_provider.dart';
+import 'providers/hash_tag_provider.dart';
 import 'providers/theme_providers.dart';
 import 'shared/disposible_email_domain_validator.dart';
 
@@ -44,6 +46,8 @@ class MyApp extends StatelessWidget {
                 )),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => ChatProvider()..init()),
+        ChangeNotifierProvider(create: (_) => CaptionProvider()),
+        ChangeNotifierProvider(create: (_) => HashtagProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {

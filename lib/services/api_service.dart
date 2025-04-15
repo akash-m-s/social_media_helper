@@ -1,30 +1,68 @@
-import 'package:flutter/widgets.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  // Send chat data as JSON to the API
-  Future<void> sendChatDataToAPI(String chatDataJson) async {
-    // Your API URL
-    final url = Uri.parse('https://your-api-endpoint.com/chat-data');
+  final String apiKey = 'YOUR_API_KEY';
+  final String endpoint = 'https://api.openai.com/v1/chat/completions';
 
-    // Set up the headers
-    final headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer your_token_here', // If you need an auth token
-    };
+  Future<String> generateCaption(Uint8List imageBytes) async {
+    // Simulate response since OpenAI Vision isn't directly supported here
+    return "A stunning sunset over the ocean.";
+  }
 
-    // Make the POST request to your API
+  Future<List<String>> suggestHashtags(String text) async {
+    // final prompt = "Suggest 10 hashtags for the following content: $text";
+    // final response = await _askGPT(prompt);
+    final response = [
+      "sunset",
+      "ocean",
+      "nature",
+      "photography",
+      "travel",
+      "beautiful",
+      "landscape",
+      "sky",
+      "beach",
+      "vacation"
+    ].join('\n');
+    return _extractList(response);
+  }
+
+  Future<List<String>> generateKeywords(String text) async {
+    final prompt = "Generate SEO-friendly keywords for this topic: $text";
+    final response = await _askGPT(prompt);
+    return _extractList(response);
+  }
+
+  Future<String> _askGPT(String prompt) async {
     final response = await http.post(
-      url,
-      headers: headers,
-      body: chatDataJson,
+      Uri.parse(endpoint),
+      headers: {
+        'Authorization': 'Bearer $apiKey',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        "model": "gpt-3.5-turbo",
+        "messages": [
+          {"role": "user", "content": prompt}
+        ],
+      }),
     );
 
-    // Check for response status
     if (response.statusCode == 200) {
-      debugPrint('Data sent successfully!');
+      final data = jsonDecode(response.body);
+      return data['choices'][0]['message']['content'];
     } else {
-      debugPrint('Failed to send data: ${response.statusCode}');
+      throw Exception("API call failed: ${response.body}");
     }
+  }
+
+  List<String> _extractList(String response) {
+    return response
+        .split(RegExp(r'\d+\.|\n|- '))
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .toList();
   }
 }
